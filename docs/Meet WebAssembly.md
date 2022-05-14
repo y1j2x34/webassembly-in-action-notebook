@@ -1,10 +1,10 @@
 # Meet WebAssembly
 
-## 认识 asm.js
+## asm.js
 
-asm.js 是 Mozilla 提出的一个基于 JavaScript 的语法标准，也就是属于 JavaScript 的严格子集，其中的代码采用具有手动内存管理的静态类型语言（C/C++）编写, 代码使用[转译器](https://en.wikipedia.org/wiki/Source-to-source_compiler)编译（例如基于LLVM的Emscripten）。通过语言特性限制在适合提前优化和其他性能改进的范围内，提高性能。
+asm.js 是 Mozilla 在2013年提出的一个基于 JavaScript 的语法标准，属于 JavaScript 的严格子集，其代码一般都是采用[转译器](https://en.wikipedia.org/wiki/Source-to-source_compiler)编译（例如基于 LLVM 的 Emscripten）将（C/C++）或其它语言转译而来。生成的 asm.js 文件变量都是静态类型，不用在运行时判断变量类型， 使得 JavaScript 引擎可以采用 AOT(Ahead Of Time) 的编译策略，也就是在运行前编译成机器码，因此运行速度会有一定提升。
 
-asm.js 的目标并不是提高手写 Javascript 代码的性能，也不实现增强性能以外的其他功能，通常是作为一种通过编译器生成的中间语言。
+asm.js 的目标并不是提高手写 JavaScript 代码的性能，也不实现增强性能以外的其他功能，通常是作为一种通过编译器生成的中间语言。
 
 ### 代码生成
 
@@ -16,9 +16,9 @@ double add(double a, int b) {
 }
 ```
 
-Emscripten 将输出下列Javascript代码（已简化）：
+Emscripten 将输出下列 JavaScript 代码（已简化）：
 
-```javascript
+```JavaScript
 function add(a, b) {
   a = +a;
   b = b | 0;
@@ -35,7 +35,7 @@ function add(a, b) {
 
 asm.js 的变量类型声明有固定写法：
 
-```javascript
+```JavaScript
 function add(a, b) {
     a = +a; // a 是32位整数
     b = b | 0; // b 是64位浮点数
@@ -47,20 +47,21 @@ asm.js 可以根据这种标记确定变量类型，不需要进行类型推断�
 
 ### asm.js 带来了这些优点
 
-- asm.js 作为一个 Javascript 子集，完全兼容 Javascript 语法，所有支持Javascript的浏览器都可以运行 asm.js 代码
+- asm.js 作为一个 JavaScript 子集，完全兼容 JavaScript 语法，所有支持JavaScript的浏览器都可以运行 asm.js 代码
 - asm.js 有着更高效的运行速度，
-- asm.js 不是用于提高手写 Javascript 的性能，而是由其他语言转译过来的中间语言，这让众多编程语言可以将现有的应用编译成 asm.js, 运行在浏览器中。
+- asm.js 不是用于提高手写 JavaScript 的性能，而是由其他语言转译过来的中间语言，这让众多编程语言可以将现有的应用编译成 asm.js, 运行在浏览器中。
 
 ### 当然，它也有缺点
 
 1. 类型提示让文件体积变得非常大
-2. 代码编写仍然受 Javascript 语法限制，如果要新增功能，将不得不修改 Javascript 语言本身；
-3. asm.js文件还是一个javascript 文件，所以它仍然需要被 Javascript 引擎解析，这在移动设备上会减慢加载速度和比较耗电。
+2. 代码编写仍然受 JavaScript 语法限制，如果要新增功能，将不得不修改 JavaScript 语言本身；
+3. asm.js 文件还是一个 JavaScript 文件，所以它仍然需要被 JavaScript 引擎解析，生成中间代码，这两步是 JavaScript 代码在引擎执行过程中消耗时间最多的两部。特别是在移动设备上会减慢加载速度和比较耗电。
+4. 它只是一个由厂商推出的，缺少一个统一的标准。
 
 ## MVP
 
-浏览器产商在研究如何改进 asm.js 时提出的一个 WebAssembly 前身: MVP，它不仅具有 asm.js 的优点，同时也解决了 asm.js 的缺点。
-从 2017 年开始，四大浏览器产商都开始支持 MVP， 即 WebAssembly。
+浏览器厂商在研究如何改进 asm.js 时提出的一个 WebAssembly 前身: MVP，它不仅具有 asm.js 的优点，同时也解决了 asm.js 的缺点。
+从 2017 年开始，四大浏览器厂商都开始支持 MVP， 即 WebAssembly。
 
 ### MVP 解决了哪些问题？
 
@@ -89,13 +90,13 @@ WebAssembly 程序（二进制版本和浏览器中的编译版本）主要单�
 
 [WebAssembly 文件基本结构](../assets/webassembly-file-structure.drawio ':include :type=code')
 
-[//]: # (![WebAssembly 文件基本结构]&#40;../assets/webassembly-file-structure.png&#41;)
+[//]: # (![WebAssembly 文件基本结构]&#40;../assets/WebAssembly-file-structure.png&#41;)
 
-### 前导(Preamble)
+### 前导
 
-Wasm 二进制文件以 Preamble 开头， Preamble 包含一个魔数（`0x00 0x61 0x73 0x6D`, 即`\0asm`）, 用于区分 WebAssembly 模块和 ES6 模块，这个魔数之后是一个版本号（`0x01 0x00 0x00 0x00`, 即 `1`）,它指明了创建本文件时使用的WebAssembly二进制格式的版本。
+Wasm 二进制文件以 前导(Preamble) 开头， 前导包含一个魔数（`0x00 0x61 0x73 0x6D`, 即`\0asm`）, 用于区分 WebAssembly 模块和 ES6 模块，这个魔数之后是一个版本号（`0x01 0x00 0x00 0x00`, 即 `1`）,它指明了创建本文件时使用的WebAssembly二进制格式的版本。
 
-在 preamble 之后就是模块的主体内容，这些内容被分门别类放在不同段（Section）中。每个段都是可选的，因此严格来说可以存在没有任何段的控模块。
+在前导之后就是模块的主体内容，这些内容被分门别类放在不同段（Section）中。每个段都是可选的，因此严格来说可以存在没有任何段的控模块。
 段分为两种： 已知段(Known Sections) 和 自定义段(Custom Sections)。
 
 ### 已知段
@@ -118,7 +119,7 @@ Wasm 二进制文件以 Preamble 开头， Preamble 包含一个魔数（`0x00 0
 
 S-表达式是一个非常古老和非常简单的用来表示树的文本格式。因此，我们可以把一个模块想象为一棵由描述了模块结构和代码的节点组成的树。不过，与一门编程语言的抽象语法树不同的是，WebAssembly的树是相当平的，也就是大部分包含了指令列表。
 
-如果我们在浏览器开发者工具查看 wasm 源码时，开发者工具会使用 WebAssembly 文本格式展示源码：
+如果我们在浏览器开发者工具查看 WebAssembly 源码时，开发者工具会使用 WebAssembly 文本格式展示源码：
 
 ![WebAssembly source code](../assets/chrome-devtools-s-expression.png)
 
@@ -130,7 +131,7 @@ S-表达式是一个非常古老和非常简单的用来表示树的文本格式
 
 ## WebAssembly 安全性
 
-WebAssembly 是第一个共享 JavaScript VM 的语言，而它在运行时是沙箱化的，在这个沙箱中，除了初始化程序时提供给它的ArrayBuffer(WebAssembly 将此 ArrayBuffer 用作线性内存,WebAssembly 会检查以确保代码在这个线性内存上运行)，而无法访问主机的内存和数据。
+WebAssembly 是第一个共享 JavaScript VM 的语言，而它在运行时是沙箱化的，在这个沙箱中，除了初始化程序时提供给它的 ArrayBuffer (WebAssembly 将此 ArrayBuffer 用作线性内存， WebAssembly 会检查以确保代码在这个线性内存上运行)，而无法访问主机的内存和数据。
 在 C++ 中，执行堆栈和线性内存一起位于内存中，尽管 C++ 代码不应该修改执行堆栈，但可以使用指针来这么做。WebAssembly 的执行堆栈与线性内存是分开的，代码无法访问。
 另外， WebAssembly 也遵守和 JavaScript 相同的安全策略，包括 同源策略 等。
 
@@ -148,14 +149,14 @@ WebAssembly 是第一个共享 JavaScript VM 的语言，而它在运行时是�
 
 ## 使用场合
 
-2017 开始，所有现代浏览器产商都发布了支持 WebAssembly MVP 的浏览器版本， 包括： Chrome, Edge, Firefox, Opera 和 Safari。
+2017 年开始，所有现代浏览器厂商都发布了支持 WebAssembly MVP 的浏览器版本， 包括： Chrome, Edge, Firefox, Opera 和 Safari。
 一些移动 Web 浏览器也支持 WebAssembly, 包括 Chrome, Firefox for Android 和 Safari。
 
-WebAssembly 在设计时就考虑了移植性，因此它可以用于多个场合，而不仅限于浏览器。可以参考这篇关于 [WASI](https://hacks.mozilla.org/2019/03/standardizing-wasi-a-webassembly-system-interface/) （WebAssembly Standard Interface）新标准的文章， 这个标准接口用于确保 WebAssembly 模块可以在所有受支持系统上保持一致性。
+WebAssembly 在设计时就考虑了移植性，因此它可以用于多个场合，而不仅限于浏览器。可以参考这篇关于 [WASI](https://hacks.mozilla.org/2019/03/standardizing-wasi-a-WebAssembly-system-interface/) （WebAssembly Standard Interface）新标准的文章， 这个标准接口用于确保 WebAssembly 模块可以在所有受支持系统上保持一致性。
 
 ## 引用
 
 1. [Emscripten 安装](https://emscripten.org/docs/getting_started/downloads.html)
-1. [WebAssembly](https://webassembly.org/)
+1. [WebAssembly](https://WebAssembly.org/)
 1. [Why marketers should care about mobile page speed](https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-load-time/)
 1. [理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)
