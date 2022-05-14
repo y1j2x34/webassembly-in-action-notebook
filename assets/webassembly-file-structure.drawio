@@ -1,0 +1,75 @@
+<mxfile host="65bd71144e">
+    <diagram id="ZFX8-NhVRAq6oS8ZDs03" name="Page-1">
+        <mxGraphModel dx="1311" dy="1609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6d8764;fontColor=#ffffff;strokeColor=#3A5431;" parent="1" vertex="1">
+                    <mxGeometry x="-696" y="86" width="240" height="940" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="5" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-350" y="125" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="Preamble" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="100" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="Any kind of data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="894" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Any kind of data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="960" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Type" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;imageHeight=24;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="166" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="Import" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="232" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="Function" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="298" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Table" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="365" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Memory" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="431" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Global" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="497" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Export" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="563" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Start" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="629" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Element" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="695" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="Code" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="762" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;rotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-670" y="828" width="190" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="&lt;h1&gt;Preamble&lt;br&gt;&lt;/h1&gt;&lt;p&gt;Indicates that this is a WebAssembly module and which version of the WebAssembly binary format was used&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-350" y="65" width="220" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;flipH=1;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-480" y="190" width="90" height="660" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="&lt;b&gt;Known sections&lt;/b&gt;&lt;br&gt;(all are optional)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-390" y="505" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;flipH=1;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-476" y="910" width="86" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="&lt;b&gt;Custom sections&lt;/b&gt;&lt;br&gt;(optional)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="-394" y="935" width="130" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
