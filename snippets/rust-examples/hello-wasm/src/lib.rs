@@ -8,20 +8,23 @@ extern  {
 }
 
 macro_rules! console_log {
-    (&h: expr $(,$t: expr)*) => {
+    () => ();
+    ($($t: tt)*) => {
         log(
             &format_args!(
-                $h $(,$t)*
+                $($t)*
             ).to_string()
         )
     }
 }
 
+#[wasm_bindgen]
 pub fn say_hello_using_web_sys(name: &str) {
     use web_sys::console;
-    console::log_1(&"Hello using web-sys: ".into(), name);
+    console::log_2(&"Hello using web-sys: ".into(), &name.into());
 }
 
+#[wasm_bindgen]
 pub fn say_hello_using_macro(name: &str) {
-    console_log!("Hello using macro: ", name);
+    console_log!("Hello using macro {}", name);
 }

@@ -201,3 +201,31 @@ pub fn say_hello_using_macro(name: &str) {
 ```bash
 wasm-pack build --target web
 ```
+
+添加一个HTML页面(index.html)：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>hello-wasm example</title>
+</head>
+<body>
+<script type="module">
+    import init, { say_hello_using_web_sys, say_hello_using_macro } from "./pkg/hello_wasm.js";
+    init()
+            .then((instance) => {
+                say_hello_using_macro("WebAssembly");
+                say_hello_using_web_sys("WebAssembly");
+            });
+</script>
+</body>
+</html>
+```
+
+然后在 rust 项目根目录启动 web 服务器，
+
+打开浏览器访问 index.html, 可以看到控制台输出结果：
+
+![Rust WebAssembly 运行结果](../assets/rust-wasm-result.png)
