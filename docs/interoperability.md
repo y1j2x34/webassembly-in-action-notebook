@@ -11,7 +11,7 @@ cargo install wasm-pack
 创建项目
 
 ```bash
-cargo new --lib hello
+cargo new --lib hello-wasm
 ```
 
 `Cargo.toml`:
@@ -61,25 +61,24 @@ rust
 
 ## Rust 调用 JavaScript
 
-`#[wasm_bindgen]` 宏可以加到 `extern "C" {}` 上来导入 JavaScript 中的函数。 这也是 `js-sys` 和 `web-sys` 这两个库的原理。
-我们也可以在自己的代码中使用这一特性。
+[//]: # (`#[wasm_bindgen]` 宏可以加到 `extern "C" {}` 上来导入 JavaScript 中的函数。 这也是 `js-sys` 和 `web-sys` 这两个库的原理。)
 
-首先，我们先创建一个 js 文件， 提供给 Rust 调用。
+首先，我们先创建一个 js 文件， js 文件使用 `export` 语句导出方法和类型：
 
 ```js
-// def.js
+// js-module.js
 export function reload() {
-    location.reload();
+    console.log('reload method')
 }
 export class User {
     constructor(id) {
-        this.id = id;
+        this._id = id;
     }
     get id() {
-        return id;
+        return this._id;
     }
     set id(i) {
-        this.id = i;
+        this._id = i;
     }
     say() {
         console.trace('Hello')
@@ -87,36 +86,69 @@ export class User {
 }
 ```
 
-然后在 Rust 中导入：
+然后在 Rust 中引用 js 文件：
 
 ```rust
-#[wasm_bindgen(module = "path/to/def.js")]
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen(module = "/js-module.js")]
 extern "C" {
-    fn reload() -> ();
     
-    type User;
-    
-    #[wasm_bingen(constructor)]
-    fn new() -> User;
-    
-    #[wasm_binden(method, getter)]
-    fn id(this: &User) -> u32;
-    
-    #[wasm_bindgen(method, setter)]
-    fn set_id(this: &User, id: u32) -> User;
-    
-    #[wasm_bindgen(method)]
-    fn say();
 }
+```
+
+映射
+
+```rust
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen(module = "/js-module.js")]
+extern "C" {
+    fn reload() -> JsValue;
+
+    type User; // class User
+
+    #[wasm_bindgen(constructor)]
+    fn new(id: String) -> User;
+
+    #[wasm_bindgen(method, getter)]
+    fn id(this: &User) -> String;
+
+    #[wasm_bindgen(method, setter)]
+    fn set_id(this: &User, id: String) -> User;
+
+    #[wasm_bindgen(method)]
+    fn say(this: &User);
+}
+
 #[wasm_bindgen(start)]
 pub fn run() {
-    let u = User::new();
-    u.set_id("123asd");
+    let u = User::new(String::from("456789"));
+    u.set_id(String::from("123asd"));
     u.say();
     reload();
 }
 ```
 
+编译：
 
+```bash
+wasm-pack build --target web
+```
+
+HTML 页面：
+
+```html
+<script type="module">
+    import init from './pkg/import_js.js';
+    init().then(mod => {
+        console.log(mod);
+    })
+</script>
+```
+
+控制台输出：
+
+![Rust 中调用 js](../assets/rust-call-js.png)
 
 ## JavaScript 如何与 Rust 交换数据
