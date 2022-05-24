@@ -22,63 +22,77 @@ WebAssembly 规范只定义了四种类型：
 
 ### 开始准备环境
 
-1. 安装 [`wasm-pack`](https://github.com/rustwasm/wasm-pack) 插件
+安装 [`wasm-pack`](https://github.com/rustwasm/wasm-pack) 插件
 
-    ```bash
-    cargo install wasm-pack
-    ```
+```bash
+cargo install wasm-pack
+```
 
-2. 创建项目
+### 创建项目
 
-    ```bash
-    cargo new --lib hello-wasm
-    ````
+```bash
+cargo new --lib getting-started-wasm-bindgen
+````
 
-3. 添加配置
+### 添加配置
     
-    ```toml
-    [lib]
-    crate-type = ["cdylib"]
-    
-    [dependencies]
-    wasm-bindgen = "0.2.80"
-    ```
+ ```toml
+[lib]
+crate-type = ["cdylib"]
 
-    > 为什么是 `cdylib` ?
-     `cdylib` 是一种为其他语言提供的动态库，它会静态链接 rust 的标准库，以及递归的静态链接该 crate 的所有依赖。
-     这样输出的动态库只会暴露所声明的符号， 不会依赖标准库的符号。`cdylib` 最终会作为其他语言编写的可执行程序的动态库依赖，或者被其他语言以 `dlopenn` 等动态加载方式加载。
-     参考： <https://doc.rust-lang.org/reference/linkage.html> 
+[dependencies]
+wasm-bindgen = "0.2.80"
+ ```
 
-4. 编写代码：
+ > 为什么是 `cdylib` ?
+  `cdylib` 是一种为其他语言提供的动态库，它会静态链接 rust 的标准库，以及递归的静态链接该 crate 的所有依赖。
+  这样输出的动态库只会暴露所声明的符号，不会依赖标准库的符号。`cdylib` 最终会作为其他语言编写的可执行程序的动态库依赖，或者被其他语言以 `dlopenn` 等动态加载方式加载。
+  参考： <https://doc.rust-lang.org/reference/linkage.html> , 中文版： <https://rustwiki.org/zh-CN/reference/linkage.html>
+
+### 编写代码：
  
-   ```rust
-    // src/lib.rs
-    // 使用一个外部库
-    extern crate wasm_bindgen;
-   
-    use wasm_bindgen::prelude::*;
-   
-    #[wasm_bindgen]
-    extern {
-        // 调用 JavaScript 函数（window.alert）
-        pub fn alert(s: &str);
-    }
-   // 定义一个可以被 JavaScript 调用的函数
-    #[wasm_bindgen]
-    pub fn say(what: &str) {
-        alert(&format!("Hello, {}!", name));
-    }
-    ```
+```rust
+// src/lib.rs
+// 使用一个外部库
+extern crate wasm_bindgen;
 
-5. 构建
+use wasm_bindgen::prelude::*;
 
-    ```bash
-    wasm-pack build --target web
+#[wasm_bindgen]
+extern {
+  // 调用 JavaScript 函数（window.alert）
+  pub fn alert(s: &str);
+}
+// 定义一个可以被 JavaScript 调用的函数
+#[wasm_bindgen]
+pub fn say(what: &str) {
+  alert(&format!("Hello, {}!", what));
+}
+```
+
+### 构建
+
+ ```bash
+ wasm-pack build --target web
+ ```
+   
+构建过程：
+
+1. 将 Rust 编译为 WebAssembly;
+1. 在编译好的 WebAssembly 代码基础上运行 `wasm-bindgen`, 生成一个 js 文件，这个 js 会导入 wasm 文件，并包装成模块；
+1. 创建一个 `pkg` 文件夹，生成的 wasm 文件和 js 文件都会放入其中;
+1. 读取 `cargo.toml` 生成相应的 `package.json`;
+1. 如果有 `README.md` ，会被复制到 `pkg` 目录中。
+1. 在 HTML 文件中引用编译好的 js 文件
+    ```html
+    <script type="module">
+        import init, {say} from './pkg/getting_started_wasm_bindgen.js';
+        init().then(() => {
+            say('World');
+        });
+    </script>
     ```
    
-    构建过程：
-   1. 将 Rust 编译为 WebAssembly;
-   2. 在编译好的 WebAssembly 代码基础上运行 `wasm-bindgen`, 生成一个 js 文件，这个 js 会导入 wasm 文件，并包装成模块；
-   3. 创建一个 `pkg` 文件夹，生成的 wasm 文件和 js 文件都会放入其中;
-   4. 读取 `cargo.toml` 生成相应的 `package.json`;
-   5. 如果有 `README.md` ，会被复制到 `pkg` 目录中。
+最后在浏览器中访问 HTML, 可以看到浏览器 alert 弹窗：
+
+![alert hello world](../assets/getting-started-with-wasm_bindgen-alert.png)
