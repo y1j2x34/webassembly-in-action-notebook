@@ -1,40 +1,17 @@
 # WebAssembly 模块与 JavaScript 互操作（Rust语言）
 
+关于如何使用rust创建WebAssembly， 可以参考这篇 [`wasm_bindgen` 入门](./getting-started-with-wasm-bindgen.md)。
+
 ## JavaScript 调用 Rust 函数
 
-在使用 rust 创建 WebAssembly 模块前，先安装工具：
-
-```bash
-cargo install wasm-pack
-```
-
-创建项目
-
-```bash
-cargo new --lib hello-wasm
-```
-
-`Cargo.toml`:
-
-```toml
-[package]
-name = "hello-wasm"
-version = "0.1.0"
-edition = "2021"
-
-[lib]
-crate-type = ["cdylib"]
-
-[dependencies]
-wasm-bindgen = "0.2.80"
-```
+首先要在 Rust 中导出函数：
 
 `src/lib.rs`
 
 ```rust
+extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
 
-// 导出 add 函数
 #[wasm_bindgen]
 pub fn add(a: f64, b: f64) -> f64 {
     a + b
@@ -46,18 +23,18 @@ pub fn add(a: f64, b: f64) -> f64 {
 ```bash
 wasm-pack build --target nodejs
 ```
+当然， target 也可以指定为 `web`, 表示生成物要在浏览器中运行。
 
 在 JavaScript 中使用:
 
 ```js
-const rust = import('./pkg/hello.js');
+import init, { add } from './pkg/js_call_rust.js';  // js_call_rust 是 cargo.toml 配置的 Package name
 
-rust
-    .then(m => m.add(100, 100))
-    .then(result => console.log(result));
+(async () => {
+    await init();
+    console.log(add(1, 1)) // 2
+})();
 ```
-
-运行 `node ./index.js` 将顺利输出 200。
 
 ## Rust 调用 JavaScript
 
@@ -97,7 +74,7 @@ extern "C" {
 }
 ```
 
-映射
+映射 js 方法和类以及类成员
 
 ```rust
 use wasm_bindgen::prelude::*;
@@ -150,5 +127,3 @@ HTML 页面：
 控制台输出：
 
 ![Rust 中调用 js](../assets/rust-call-js.png)
-
-## JavaScript 如何与 Rust 交换数据
